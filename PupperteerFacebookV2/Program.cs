@@ -14,8 +14,6 @@ namespace PupperteerFacebookV2
 
     class Program
     {
-   
-
         private static NavigationOptions _navigationOptions = new NavigationOptions { WaitUntil = new WaitUntilNavigation[] { WaitUntilNavigation.Networkidle0 } };
         static async Task Main(string[] args)
         {
@@ -42,7 +40,7 @@ namespace PupperteerFacebookV2
 
             string faceBookEmail = settings.User;
             string faceBookPassword = settings.Pass;
-     
+
 
             //email
             var userNameSelector = "#email";
@@ -58,16 +56,19 @@ namespace PupperteerFacebookV2
             await page.Keyboard.PressAsync("Enter");
 
 
-            var SearchInputSelector = "label.rq0escxv.a8c37x1j.a5nuqjux.l9j0dhe7.k4urcfbm input";
-            await page.WaitForSelectorAsync(SearchInputSelector);
-            await TypeFieldValueSearch(page, SearchInputSelector, "JavaScript, React, and Node.js", delay);
+            //var SearchInputSelector = "label.rq0escxv.a8c37x1j.a5nuqjux.l9j0dhe7.k4urcfbm input";
+            //await page.WaitForSelectorAsync(SearchInputSelector);
+            //await TypeFieldValueSearch(page, SearchInputSelector, "JavaScript, React, and Node.js", delay);
 
-            await page.ClickAsync("div.oajrlxb2.gs1a9yip");
+            //await page.ClickAsync("div.oajrlxb2.gs1a9yip");
 
-            await page.GoToAsync("https://www.facebook.com/search/top/?q=JavaScript%2C%20React%2C%20and%20Node.js");
+            //await page.GoToAsync("https://www.facebook.com/search/top/?q=JavaScript%2C%20React%2C%20and%20Node.js");
 
+
+            Thread.Sleep(1000);
 
             await page.GoToAsync("https://www.facebook.com/groups/javascript.react.node/");
+
 
             Thread.Sleep(10000);
 
@@ -75,12 +76,13 @@ namespace PupperteerFacebookV2
 
             scroll = new Func<Task>(async () =>
             {
+
                 await page.Keyboard.DownAsync("ArrowDown");
 
             });
             for (int i = 0; i < 20; i++)
             {
-                Thread.Sleep(500);
+                Thread.Sleep(300);
                 Console.WriteLine("scroll");
                 await scroll();
             }
@@ -102,20 +104,47 @@ namespace PupperteerFacebookV2
             {
                 Data data = new Data();
                 await page.SetContentAsync(result.content);
-                var elementHandle = await page.QuerySelectorAsync("a.oajrlxb2.g5ia77u1.qu0x051f.esr5mh6w.e9989ue4.r7d6kgcz.rq0escxv.nhd2j8a9.nc684nl6.p7hjln8o.kvgmc6g5.cxmmr5t8.oygrvhab.hcukyx3x.jb3vyjys.rz4wbd8a.qt6c0cv9.a8nywdso.i1ao9s8h.esuyzwwr.f1sip0of.lzcic4wl.oo9gr5id.gpro0wi8.lrazzd5p ");
-                var content = await elementHandle.QuerySelectorAsync("span").EvaluateFunctionAsync<string>("node => node.innerText");
+                Thread.Sleep(500);
+                string content = "", content2 = "";
 
-                var content2 = await page.QuerySelectorAsync("div.kvgmc6g5.cxmmr5t8.oygrvhab.hcukyx3x.c1et5uql.ii04i59q").EvaluateFunctionAsync<string>("node => node.innerText");
-                data.posttext = content2;
-                data.author = content;
-                authorNamesAndText.Add(data);
+                var elementHandle = await page.QuerySelectorAsync("span.d2edcug0.hpfvmrgz.qv66sw1b.c1et5uql.lr9zc1uh.a8c37x1j.keod5gw0.nxhoafnm.aigsh9s9.d3f4x2em.fe6kdd0r.mau55g9w.c8b282yb.iv3no6db.jq4qci2q.a3bd9o3v.knj5qynh.m9osqain.hzawbc8m");
+                if (elementHandle != null)
+                {
+                    try
+                    {
+                        content = await elementHandle.QuerySelectorAsync("span").EvaluateFunctionAsync<string>("node => node.innerText");
+                    }
+                    catch (Exception e1)
+                    {
+                        Console.WriteLine("error in getting content: " + e1.Message);
+                    }
+
+                }
+
+                if (content != "")
+                {
+                    Thread.Sleep(500);
+                    try
+                    {
+                        content2 = await page.QuerySelectorAsync("div.kvgmc6g5.cxmmr5t8.oygrvhab.hcukyx3x.c1et5uql.ii04i59q").EvaluateFunctionAsync<string>("node => node.innerText");
+                    }
+                    catch (Exception e2)
+                    {
+                        Console.WriteLine("error in getting content: " + e2.Message);
+                    }
+                    data.author = content;
+                    data.posttext = content2;
+                    authorNamesAndText.Add(data);
+                }
+
             }
 
 
             //print author and post list
             foreach (Data ap in authorNamesAndText)
             {
-                Console.WriteLine(ap);
+                Console.WriteLine("Author: " + ap.author);
+                Console.WriteLine("Post: " + ap.posttext);
             }
 
             await browser.CloseAsync();
