@@ -51,8 +51,7 @@ namespace PupperteerFacebookV2
 
             string faceBookEmail = settings.User;
             string faceBookPassword = settings.Pass;
-            //string faceBookEmail = "galzisin@walla.co.il";
-            //string faceBookPassword = "k28spq1gal";
+     
 
             //email
             var userNameSelector = "#email";
