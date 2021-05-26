@@ -20,15 +20,6 @@ namespace PupperteerFacebookV2
         static async Task Main(string[] args)
         {
 
- 
-            //var configuration = new ConfigurationBuilder().AddJsonFile("appsetting.json", false, false).Build();
-
-            //Configuration = builder.Build();
-
-            //User = Configuration["Account:User"];
-
-            //Pass = Configuration["Account:Pass"];
-
             const string url = "https://www.facebook.com/";
             await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
 
@@ -95,9 +86,6 @@ namespace PupperteerFacebookV2
             }
 
 
-
-
-            //.oajrlxb2.g5ia77u1.qu0x051f.esr5mh6w.e9989ue4.r7d6kgcz.rq0escxv.nhd2j8a9.nc684nl6.p7hjln8o.kvgmc6g5.cxmmr5t8.oygrvhab.hcukyx3x.jb3vyjys.rz4wbd8a.qt6c0cv9.a8nywdso.i1ao9s8h.esuyzwwr.f1sip0of.lzcic4wl.oo9gr5id.gpro0wi8.lrazzd5p
             var jscode = @"() => {
                                   const selectors = Array.from(document.querySelectorAll(`div.du4w35lb.k4urcfbm.l9j0dhe7.sjgh65i0`));                                                                                
                                   return selectors.map( t=> {return {content: t.innerHTML}});
